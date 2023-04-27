@@ -2,14 +2,28 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
 
-module.exports = {
-   mode:'development',
-   entry:'./src/index.js',
+
+
+const devServer = (isDev) => !isDev ? {} : {
+   devServer: {
+      static: {
+         directory: path.join(__dirname, "./")
+       },
+       compress: true,
+       port: 8080,
+   },
+ };
+
+module.exports =({development})=> ({
+   mode: development ? 'development' : 'production',
+   devtool: development ? 'inline-source-map' : false,
+   entry: {
+      main: './src/index.js'
+   },
    output:{
       path:path.resolve(__dirname, 'dist'),
-      filename:'bundle.js',
+      filename: '[name].[contenthash].js',
       assetModuleFilename:'assets/[name][ext]',
    },
    module:{
@@ -19,26 +33,27 @@ module.exports = {
          type: 'asset/resource',
       },
       {
-         test: /\.html$/i,
-         loader: 'html-loader'   
-      },
-      {
          test: /\.(woff|woff2|eot|ttf|otf)$/i,
          type: 'asset/resource',
        },
        {
          test: /\.css$/i,
-         use: [MiniCssExtractPlugin.loader,"style-loader", "css-loader"],
+         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+       },
+       {
+         test: /\.s[ac]ss$/i,
+         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
        }
-    ]   },
+    ]   
+   },
    plugins: [
       new HtmlWebpackPlugin({
-         template:'./src/index.html'
+         template: path.resolve(__dirname, './src/index.html'), 
       }),
-      new CleanWebpackPlugin(),
+     
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
 
-      new MiniCssExtractPlugin({
-        filename:'[name].[contenthash].css',  
-      })
+    new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
    ],
-};
+   ...devServer(development)
+});
