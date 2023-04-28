@@ -2,8 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 
+const esLintPlugin = (isDev) => isDev ? [] : [ new ESLintPlugin({ extensions:'js' }) ];
 
 const devServer = (isDev) => !isDev ? {} : {
    devServer: {
@@ -47,6 +49,7 @@ module.exports =({development})=> ({
     ]   
    },
    plugins: [
+      ...esLintPlugin(development),
       new HtmlWebpackPlugin({
          template: path.resolve(__dirname, './src/index.html'), 
       }),
