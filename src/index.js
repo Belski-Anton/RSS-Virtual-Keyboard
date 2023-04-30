@@ -79,4 +79,43 @@ function renderKeys(arrKeys){
    })
 }
 
-renderKeys(arrKeysRu);
+renderKeys(arrKeysEn);
+
+let allKeys = document.querySelectorAll('.key');
+ let isUpperCase = false
+allKeys.forEach(elem =>{
+   elem.addEventListener('click',function(){
+      if(!compareArr.includes(elem.textContent)){
+      textarea.value += elem.textContent;
+      }else{
+         if(!elem.textContent){
+            textarea.value += ' ';
+         }else if(elem.textContent === 'Enter'){
+            textarea.value += '\n';
+         }else if(elem.textContent === 'Backspace'){
+           let position=textarea.selectionStart;
+           console.log(position)
+           let value =  textarea.value;
+           textarea.focus();
+           textarea.value = value.slice(0,position-1) + value.slice(position);
+           textarea.selectionStart = position-1
+         }
+         else if(elem.textContent === 'CapsLock'){
+            isUpperCase = !isUpperCase
+            for(let key of allKeys){
+               if(key.textContent.length<2){
+                  if(isUpperCase){
+                  key.innerHTML = key.innerHTML.toUpperCase();
+                  }else{
+                     key.innerHTML = key.innerHTML.toLowerCase(); 
+                  }
+               }
+            }
+         }
+      }
+   })
+})
+
+
+
+
