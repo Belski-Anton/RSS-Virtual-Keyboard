@@ -81,3 +81,8 @@ body{
  width: 360px;
 }
 
+.keyboard .key.active {
+   background-color: #2cfd72;
+   border-radius: 50px
+}
+

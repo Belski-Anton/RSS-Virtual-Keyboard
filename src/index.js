@@ -42,7 +42,14 @@ const arrKeysEn = [
    ['Ctrl','Win','Alt','','Alt','◄','▼','►','Ctrl'],
 ]
 
-const compareArr = ['Backspace','Tab','Del','CapsLock','Enter','Shift','▲','Ctrl','Win','Alt','◄','▼','►' ,'']
+const compareArr =
+ ['Backspace','Tab','Del','CapsLock','Enter','Shift','▲','Ctrl','Win','Alt','◄','▼','►' ,'','ArrowUp','ArrowDown','ArrowLeft','ArrowRight']
+
+ textarea.setAttribute('autofocus', 'autofocus');
+ document.onclick = () => {
+   textarea.focus();
+ };
+
 
 function renderKeys(arrKeys){
    arrKeys.forEach(el=>{
@@ -84,7 +91,11 @@ renderKeys(arrKeysEn);
 let allKeys = document.querySelectorAll('.key');
  let isUpperCase = false
 allKeys.forEach(elem =>{
+   elem.addEventListener('mouseleave',()=>{ 
+      elem.classList.remove('active')
+   })
    elem.addEventListener('click',function(){
+      elem.classList.add('active')
       if(!compareArr.includes(elem.textContent)){
       textarea.value += elem.textContent;
       }else{
@@ -93,13 +104,35 @@ allKeys.forEach(elem =>{
          }else if(elem.textContent === 'Enter'){
             textarea.value += '\n';
          }else if(elem.textContent === 'Backspace'){
-           let position=textarea.selectionStart;
-           console.log(position)
-           let value =  textarea.value;
-           textarea.focus();
-           textarea.value = value.slice(0,position-1) + value.slice(position);
-           textarea.selectionStart = position-1
+           const position=textarea.selectionStart;
+           if(position !== 0){
+            const value =  textarea.value;
+            textarea.value = value.slice(0,position-1) + value.slice(position);
+            textarea.selectionStart = position-1;
+            textarea.selectionEnd = position-1;
+           }
+          
+         } 
+         else if(elem.textContent === 'Del'){
+            const position=textarea.selectionStart;
+            const value =  textarea.value;
+            textarea.value = value.slice(0,position) + value.slice(position + 1);
+            textarea.selectionStart = position;
+            textarea.selectionEnd = position;
+           
+          
+          
          }
+          else if(elem.textContent === '◄'){
+            textarea.value += '◄';
+          }else if(elem.textContent === '►'){
+            textarea.value += '►';
+          }else if(elem.textContent === '▲'){
+            textarea.value += '▲';
+          }else if(elem.textContent === '▼'){
+            textarea.value += '▼';
+          }
+
          else if(elem.textContent === 'CapsLock'){
             isUpperCase = !isUpperCase
             for(let key of allKeys){
@@ -118,4 +151,32 @@ allKeys.forEach(elem =>{
 
 
 
+
+document.addEventListener('keydown', function(event){
+   console.log(event)
+   let currentKey = event.key
+   if(!compareArr.includes(currentKey) || !currentKey){
+      // textarea.value = currentKey
+   } else if(currentKey ==='Tab'){
+      event.preventDefault();
+      textarea.value += '  ';
+   }
+   else if(currentKey === 'ArrowUp'){
+      // event.preventDefault();
+      textarea.value += '▲';  
+   }
+   else if(currentKey === 'ArrowDown'){
+      // event.preventDefault();
+      textarea.value += '▼';  
+   }
+   else if(currentKey === 'ArrowLeft'){
+      // event.preventDefault();
+      textarea.value += '◄';  
+   }
+   else if(currentKey === 'ArrowRight'){
+      // event.preventDefault();
+      textarea.value += '►';  
+   }
+   
+});
 
