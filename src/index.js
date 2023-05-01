@@ -9,9 +9,13 @@ let textarea = document.createElement('textarea');
 textarea.className = 'textarea';
 document.body.append(textarea);
 
-let keyboard = document.createElement('div');
-keyboard.className = 'keyboard';
-document.body.append(keyboard);
+let keyboardEn = document.createElement('div');
+keyboardEn.className = 'keyboard';
+document.body.append(keyboardEn);
+
+let keyboardRu = document.createElement('div');
+keyboardRu.className = 'keyboard none';
+document.body.append(keyboardRu);
 
 let paragraph_1 = document.createElement('p');
 paragraph_1.className = 'description';
@@ -51,7 +55,7 @@ const compareArr =
  };
 
 
-function renderKeys(arrKeys){
+function renderKeys(arrKeys,keyboard){
    arrKeys.forEach(el=>{
       let arr = document.createElement('div');
       arr.className = 'row'
@@ -86,7 +90,8 @@ function renderKeys(arrKeys){
    })
 }
 
-renderKeys(arrKeysEn);
+renderKeys(arrKeysEn,keyboardEn);
+renderKeys(arrKeysRu,keyboardRu);
 
 let allKeys = document.querySelectorAll('.key');
  let isUpperCase = false
@@ -155,26 +160,29 @@ allKeys.forEach(elem =>{
 document.addEventListener('keydown', function(event){
    console.log(event)
    let currentKey = event.key
-   if(!compareArr.includes(currentKey) || !currentKey){
-      // textarea.value = currentKey
+   if ( 
+      (event.altKey && currentKey === "Control") || 
+      (event.ctrlKey && currentKey === "Alt") 
+    ) { 
+      keyboardEn.classList.toggle("none"); 
+      keyboardRu.classList.toggle("none"); 
+   
+    }
+     else if(!compareArr.includes(currentKey) || !currentKey){
    } else if(currentKey ==='Tab'){
       event.preventDefault();
       textarea.value += '  ';
    }
    else if(currentKey === 'ArrowUp'){
-      // event.preventDefault();
       textarea.value += '▲';  
    }
    else if(currentKey === 'ArrowDown'){
-      // event.preventDefault();
       textarea.value += '▼';  
    }
    else if(currentKey === 'ArrowLeft'){
-      // event.preventDefault();
       textarea.value += '◄';  
    }
    else if(currentKey === 'ArrowRight'){
-      // event.preventDefault();
       textarea.value += '►';  
    }
    
