@@ -1,9 +1,9 @@
 import './style.css';
 
-const elem = document.createElement('h1');
-elem.className = 'title';
-elem.textContent = 'RSS Виртуальная клавиатура';
-document.body.append(elem);
+const heading = document.createElement('h1');
+heading.className = 'title';
+heading.textContent = 'RSS Виртуальная клавиатура';
+document.body.append(heading);
 
 const textarea = document.createElement('textarea');
 textarea.className = 'textarea';
@@ -129,6 +129,7 @@ allKeys.forEach((elem) => {
       textarea.value += '▼';
     } else if (elem.textContent === 'CapsLock') {
       isUpperCase = !isUpperCase;
+      /* eslint-disable-next-line */
       for (const key of allKeys) {
         if (key.textContent.length < 2) {
           if (isUpperCase) {
@@ -143,7 +144,6 @@ allKeys.forEach((elem) => {
 });
 
 document.addEventListener('keydown', (event) => {
-  console.log(event);
   const currentKey = event.key;
   const btnKeyboard = [...allKeys].find((el) => el.textContent === currentKey);
   if (btnKeyboard) {
@@ -152,11 +152,10 @@ document.addEventListener('keydown', (event) => {
       btnKeyboard.classList.remove('active');
     }, 300);
   } else if (event.code === 'ControlLeft') {
-    const btnKeyboard = [...allKeys].find((el) => el.textContent === 'Ctrl');
-    console.log(btnKeyboard);
-    btnKeyboard.classList.add('active');
+    const button = [...allKeys].find((el) => el.textContent === 'Ctrl');
+    button.classList.add('active');
     setTimeout(() => {
-      btnKeyboard.classList.remove('active');
+      button.classList.remove('active');
     }, 300);
   }
   if (
@@ -171,35 +170,36 @@ document.addEventListener('keydown', (event) => {
     event.preventDefault();
     textarea.value += '  ';
   } else if (currentKey === 'ArrowUp') {
-    const btnKeyboard = [...allKeys].find((el) => el.textContent === '▲');
-    btnKeyboard.classList.add('active');
+    const button = [...allKeys].find((el) => el.textContent === '▲');
+    button.classList.add('active');
     setTimeout(() => {
-      btnKeyboard.classList.remove('active');
+      button.classList.remove('active');
     }, 300);
     textarea.value += '▲';
   } else if (currentKey === 'ArrowDown') {
-    const btnKeyboard = [...allKeys].find((el) => el.textContent === '▼');
-    btnKeyboard.classList.add('active');
+    const button = [...allKeys].find((el) => el.textContent === '▼');
+    button.classList.add('active');
     setTimeout(() => {
-      btnKeyboard.classList.remove('active');
+      button.classList.remove('active');
     }, 300);
     textarea.value += '▼';
   } else if (currentKey === 'ArrowLeft') {
-    const btnKeyboard = [...allKeys].find((el) => el.textContent === '◄');
-    btnKeyboard.classList.add('active');
+    const button = [...allKeys].find((el) => el.textContent === '◄');
+    button.classList.add('active');
     setTimeout(() => {
-      btnKeyboard.classList.remove('active');
+      button.classList.remove('active');
     }, 300);
     textarea.value += '◄';
   } else if (currentKey === 'ArrowRight') {
-    const btnKeyboard = [...allKeys].find((el) => el.textContent === '►');
-    btnKeyboard.classList.add('active');
+    const button = [...allKeys].find((el) => el.textContent === '►');
+    button.classList.add('active');
     setTimeout(() => {
-      btnKeyboard.classList.remove('active');
+      button.classList.remove('active');
     }, 300);
     textarea.value += '►';
   } else if (currentKey === 'CapsLock') {
     isUpperCase = !isUpperCase;
+    /* eslint-disable-next-line */
     for (const key of allKeys) {
       if (key.textContent.length < 2) {
         if (isUpperCase) {
